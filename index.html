@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrnoVillas - Premium Scroll Radial Slider</title>
+    <!-- Google Font: Outfit for a premium, modern architectural look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <!-- Premium Presentation Layout -->
+    <div class="webpage-container">
+        <!-- Left Panel: Slide Indicators -->
+        <section class="slider-left" aria-label="Slide Selector">
+            <div class="slide-indicators" id="slide-indicators-list">
+                <!-- Dynamic indicators will be inserted here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Center Panel: The Circular Image & Hand -->
+        <section class="slider-center" aria-label="Visual Slider">
+            <div class="circle-slider-wrapper">
+                <div class="circle-frame" id="circle-frame">
+                    <div class="slide-image-layer current" id="img-current"></div>
+                    <div class="slide-image-layer next" id="img-next"></div>
+                    <div class="radial-line" id="radial-line"></div>
+                    <div class="center-dot" id="center-dot"></div>
+                </div>
+                <!-- Coordinates display below circle -->
+                <div class="coordinates-wrapper">
+                    <div class="coordinates-text" id="coordinates-text">13°05'12"</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>

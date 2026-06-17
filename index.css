@@ -1,0 +1,178 @@
+/* Core Reset and Typography */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #ffffff;
+    color: #000000;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow: hidden; /* Fully prevent any scrolling */
+}
+
+/* Premium Presentation Container */
+.webpage-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    background-color: #ffffff;
+}
+
+/* Absolute Left Section: Slide Selectors */
+.slider-left {
+    position: absolute;
+    left: 80px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+}
+
+.slide-indicators {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.indicator-item {
+    font-size: 13px;
+    font-weight: 300;
+    color: #cccccc;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-variant-numeric: tabular-nums;
+    user-select: none;
+}
+
+.indicator-item::before {
+    content: '';
+    display: inline-block;
+    width: 0;
+    height: 1px;
+    background-color: #000000;
+    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.indicator-item.active {
+    color: #000000;
+    font-weight: 500;
+    font-size: 18px;
+    transform: translateX(10px);
+}
+
+.indicator-item.active::before {
+    width: 16px;
+}
+
+.indicator-item:hover {
+    color: #000000;
+}
+
+/* Center Section: Circular Mask & Line */
+.slider-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 50;
+}
+
+.circle-slider-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.circle-frame {
+    width: 190px;
+    height: 190px;
+    position: relative;
+    border-radius: 50%;
+    overflow: visible;
+}
+
+.slide-image-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-color: #ffffff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.slide-image-layer.current {
+    z-index: 1;
+}
+
+.slide-image-layer.next {
+    z-index: 2;
+    /* Circular mask definition */
+    -webkit-mask-image: conic-gradient(from 205deg, #000000 0deg, transparent 0deg);
+    mask-image: conic-gradient(from 205deg, #000000 0deg, transparent 0deg);
+}
+
+.center-dot {
+    width: 9px;
+    height: 9px;
+    background-color: #000000;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    box-shadow: 0 0 0 2px #ffffff;
+}
+
+.radial-line {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 190px;
+    height: 1px;
+    background-color: #e2e2e2;
+    transform-origin: 0% 50%;
+    z-index: 5;
+    transform: rotate(205deg);
+}
+
+.radial-line::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: -2.5px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #cccccc;
+}
+
+/* Coordinates Styling */
+.coordinates-wrapper {
+    margin-top: 48px;
+    display: flex;
+    justify-content: center;
+}
+
+.coordinates-text {
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 1.5px;
+    color: #000000;
+    font-variant-numeric: tabular-nums;
+    font-family: 'Outfit', monospace;
+}

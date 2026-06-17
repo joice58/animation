@@ -1,0 +1,9 @@
+# Workspace Log files
+*.log
+.system_generated/
+system_generated/
+
+# OS specific files
+.DS_Store
+Thumbs.db
+desktop.ini
