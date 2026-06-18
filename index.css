@@ -120,8 +120,8 @@ body {
 
 .slide-image-layer.next {
     z-index: 2;
-    -webkit-mask-image: conic-gradient(from 205deg, #000000 0deg, transparent 0deg);
-    mask-image: conic-gradient(from 205deg, #000000 0deg, transparent 0deg);
+    -webkit-mask-image: conic-gradient(from 130deg, #000000 0deg, transparent 0deg);
+    mask-image: conic-gradient(from 130deg, #000000 0deg, transparent 0deg);
 }
 
 .center-dot {
@@ -144,9 +144,9 @@ body {
     width: 280px; /* Increased from 190px */
     height: 1px;
     background-color: #e2e2e2;
-    transform-origin: 0% 50%;
+    transform-origin: 0% 100%;
     z-index: 5;
-    transform: rotate(205deg);
+    transform: rotate(130deg);
 }
 
 .radial-line::after {
