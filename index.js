@@ -131,7 +131,7 @@ function goToSlide(nextIndex) {
         imgCurrent.style.backgroundImage = `url(${currentSlide.image})`;
         imgNext.style.backgroundImage = `url(${nextSlide.image})`;
         
-        const initMask = `conic-gradient(from 130deg, #000000 0deg, transparent 0deg)`;
+        const initMask = `conic-gradient(from 0deg, #000000 0deg, transparent 0deg)`;
         imgNext.style.webkitMaskImage = initMask;
         imgNext.style.maskImage = initMask;
         imgNext.style.opacity = '1';
@@ -143,7 +143,7 @@ function goToSlide(nextIndex) {
             const ease = 1 - Math.pow(1 - progress, 3);
             const angle = ease * 360;
 
-            const maskStr = `conic-gradient(from 130deg, #000000 ${angle}deg, transparent ${angle}deg)`;
+            const maskStr = `conic-gradient(from 0deg, #000000 ${angle}deg, transparent ${angle}deg)`;
             imgNext.style.webkitMaskImage = maskStr;
             imgNext.style.maskImage = maskStr;
 
@@ -164,7 +164,7 @@ function goToSlide(nextIndex) {
         imgCurrent.style.backgroundImage = `url(${nextSlide.image})`; // Target slide underneath
         imgNext.style.backgroundImage = `url(${currentSlide.image})`; // Current slide on top
         
-        const initMask = `conic-gradient(from 130deg, #000000 360deg, transparent 360deg)`;
+        const initMask = `conic-gradient(from 0deg, #000000 360deg, transparent 360deg)`;
         imgNext.style.webkitMaskImage = initMask;
         imgNext.style.maskImage = initMask;
         imgNext.style.opacity = '1';
@@ -176,7 +176,7 @@ function goToSlide(nextIndex) {
             const ease = 1 - Math.pow(1 - progress, 3);
             const angle = 360 - (ease * 360);
 
-            const maskStr = `conic-gradient(from 130deg, #000000 ${angle}deg, transparent ${angle}deg)`;
+            const maskStr = `conic-gradient(from 0deg, #000000 ${angle}deg, transparent ${angle}deg)`;
             imgNext.style.webkitMaskImage = maskStr;
             imgNext.style.maskImage = maskStr;
 
@@ -250,7 +250,7 @@ function init() {
     imgCurrent.style.backgroundColor = '#ffffff';
     imgNext.style.backgroundImage = `url(${slides[0].image})`;
     
-    const initMask = `conic-gradient(from 130deg, #000000 0deg, transparent 0deg)`;
+    const initMask = `conic-gradient(from 0deg, #000000 0deg, transparent 0deg)`;
     imgNext.style.webkitMaskImage = initMask;
     imgNext.style.maskImage = initMask;
     imgNext.style.opacity = '1';
@@ -275,7 +275,7 @@ function init() {
             const ease = 1 - Math.pow(1 - progress, 3);
             const angle = ease * 360;
 
-            const maskStr = `conic-gradient(from 130deg, #000000 ${angle}deg, transparent ${angle}deg)`;
+            const maskStr = `conic-gradient(from 0deg, #000000 ${angle}deg, transparent ${angle}deg)`;
             imgNext.style.webkitMaskImage = maskStr;
             imgNext.style.maskImage = maskStr;
 
