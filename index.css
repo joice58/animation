@@ -25,7 +25,7 @@ body {
     background-color: #ffffff;
 }
 
-/* Absolute Left Section: Slide Selectors */
+/* Absolute Left Section: Slide Indicators */
 .slider-left {
     position: absolute;
     left: 80px;
@@ -93,8 +93,8 @@ body {
 }
 
 .circle-frame {
-    width: 190px;
-    height: 190px;
+    width: 280px; /* Increased from 190px */
+    height: 280px; /* Increased from 190px */
     position: relative;
     border-radius: 50%;
     overflow: visible;
@@ -120,14 +120,13 @@ body {
 
 .slide-image-layer.next {
     z-index: 2;
-    /* Circular mask definition */
     -webkit-mask-image: conic-gradient(from 205deg, #000000 0deg, transparent 0deg);
     mask-image: conic-gradient(from 205deg, #000000 0deg, transparent 0deg);
 }
 
 .center-dot {
-    width: 9px;
-    height: 9px;
+    width: 11px; /* Increased from 9px */
+    height: 11px; /* Increased from 9px */
     background-color: #000000;
     border-radius: 50%;
     position: absolute;
@@ -142,7 +141,7 @@ body {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 190px;
+    width: 280px; /* Increased from 190px */
     height: 1px;
     background-color: #e2e2e2;
     transform-origin: 0% 50%;

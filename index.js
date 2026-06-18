@@ -117,7 +117,6 @@ function goToSlide(nextIndex) {
     const isForward = nextIndex > currentIndex;
 
     // Highlight indicator instantly
-    const oldIndex = currentIndex;
     currentIndex = nextIndex;
     renderIndicators();
 
@@ -129,11 +128,9 @@ function goToSlide(nextIndex) {
 
     if (isForward) {
         // --- FORWARD WIPE (Clockwise: 0 -> 360 degrees) ---
-        // Stack Slide B (imgNext) on top of Slide A (imgCurrent)
         imgCurrent.style.backgroundImage = `url(${currentSlide.image})`;
         imgNext.style.backgroundImage = `url(${nextSlide.image})`;
         
-        // Start mask at 0 degrees
         const initMask = `conic-gradient(from 205deg, #000000 0deg, transparent 0deg)`;
         imgNext.style.webkitMaskImage = initMask;
         imgNext.style.maskImage = initMask;
@@ -153,7 +150,6 @@ function goToSlide(nextIndex) {
             if (progress < 1) {
                 requestAnimationFrame(sweepForward);
             } else {
-                // Wipe complete: make target slide current, reset next layer
                 imgCurrent.style.backgroundImage = `url(${nextSlide.image})`;
                 imgNext.style.opacity = '0';
                 imgNext.style.webkitMaskImage = '';
@@ -165,11 +161,9 @@ function goToSlide(nextIndex) {
 
     } else {
         // --- BACKWARD WIPE (Counter-clockwise: 360 -> 0 degrees) ---
-        // Stack Slide B (imgNext, current slide) on top of Slide A (imgCurrent, target slide)
         imgCurrent.style.backgroundImage = `url(${nextSlide.image})`; // Target slide underneath
         imgNext.style.backgroundImage = `url(${currentSlide.image})`; // Current slide on top
         
-        // Start mask at 360 degrees (fully visible)
         const initMask = `conic-gradient(from 205deg, #000000 360deg, transparent 360deg)`;
         imgNext.style.webkitMaskImage = initMask;
         imgNext.style.maskImage = initMask;
@@ -180,7 +174,6 @@ function goToSlide(nextIndex) {
             const progress = Math.min(elapsed / duration, 1);
             
             const ease = 1 - Math.pow(1 - progress, 3);
-            // Count down from 360 to 0 degrees to un-wipe
             const angle = 360 - (ease * 360);
 
             const maskStr = `conic-gradient(from 205deg, #000000 ${angle}deg, transparent ${angle}deg)`;
@@ -190,7 +183,6 @@ function goToSlide(nextIndex) {
             if (progress < 1) {
                 requestAnimationFrame(sweepBackward);
             } else {
-                // Wipe complete: set target slide as current, hide next layer
                 imgCurrent.style.backgroundImage = `url(${nextSlide.image})`;
                 imgNext.style.opacity = '0';
                 imgNext.style.webkitMaskImage = '';
@@ -209,16 +201,14 @@ function initScrollListeners() {
     // 1. Wheel Listener
     window.addEventListener('wheel', (e) => {
         if (isTransitioning) return;
-        
-        // Filter out tiny scrolls
         if (Math.abs(e.deltaY) < 15) return;
         
         if (e.deltaY > 0) {
-            // Scroll down -> Next slide. Stop if it's the last slide.
+            // Scroll down -> Next slide. Stop at boundary slides.
             if (currentIndex === slides.length - 1) return;
             goToSlide(currentIndex + 1);
         } else if (e.deltaY < 0) {
-            // Scroll up -> Previous slide. Stop if it's the first slide.
+            // Scroll up -> Previous slide. Stop at boundary slides.
             if (currentIndex === 0) return;
             goToSlide(currentIndex - 1);
         }
@@ -235,7 +225,6 @@ function initScrollListeners() {
         const touchEndY = e.changedTouches[0].clientY;
         const diffY = touchStartY - touchEndY;
         
-        // Trigger if swipe distance is greater than 50px
         if (Math.abs(diffY) > 50) {
             if (diffY > 0) {
                 // Swipe up -> Next slide. Stop at boundary.
@@ -250,15 +239,58 @@ function initScrollListeners() {
     }, { passive: true });
 }
 
-// Initialize Slider App
+// Initialize Slider App with startup entry wipe animation
 function init() {
-    // Set initial slide state
-    imgCurrent.style.backgroundImage = `url(${slides[currentIndex].image})`;
-    imgNext.style.opacity = '0';
-    coordinatesText.textContent = slides[currentIndex].coordinate;
-    
+    // Render initial selector indicators & configure listeners
     renderIndicators();
     initScrollListeners();
+
+    // Configure initial layers for entry wipe (start from empty white circle)
+    imgCurrent.style.backgroundImage = 'none';
+    imgCurrent.style.backgroundColor = '#ffffff';
+    imgNext.style.backgroundImage = `url(${slides[0].image})`;
+    
+    const initMask = `conic-gradient(from 205deg, #000000 0deg, transparent 0deg)`;
+    imgNext.style.webkitMaskImage = initMask;
+    imgNext.style.maskImage = initMask;
+    imgNext.style.opacity = '1';
+    
+    // Start coordinate at 00°00'00"
+    coordinatesText.textContent = "00°00'00\"";
+    
+    // Lock transitions during entry animation
+    isTransitioning = true;
+
+    // Trigger Slide 1 entry wipe clockwise from the radial line after 300ms
+    setTimeout(() => {
+        animateCoordinates("00°00'00\"", slides[0].coordinate, 1200);
+
+        const startTime = performance.now();
+        const duration = 1200;
+
+        function entryWipe(now) {
+            const elapsed = now - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            
+            const ease = 1 - Math.pow(1 - progress, 3);
+            const angle = ease * 360;
+
+            const maskStr = `conic-gradient(from 205deg, #000000 ${angle}deg, transparent ${angle}deg)`;
+            imgNext.style.webkitMaskImage = maskStr;
+            imgNext.style.maskImage = maskStr;
+
+            if (progress < 1) {
+                requestAnimationFrame(entryWipe);
+            } else {
+                imgCurrent.style.backgroundImage = `url(${slides[0].image})`;
+                imgNext.style.opacity = '0';
+                imgNext.style.webkitMaskImage = '';
+                imgNext.style.maskImage = '';
+                isTransitioning = false; // Enable scrolling
+            }
+        }
+        requestAnimationFrame(entryWipe);
+    }, 300);
 }
 
 // Run init on load

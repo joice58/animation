@@ -1,6 +1,6 @@
 /**
  * RadialSlider - Self-Contained Architectural Scroll Slider
- * Version: 1.0.0
+ * Version: 1.0.1
  * Exposed class: window.RadialSlider
  */
 (function() {
@@ -95,8 +95,8 @@
         }
 
         #radial-slider-wrapper .circle-frame {
-            width: 190px;
-            height: 190px;
+            width: 280px; /* Scaled from 190px */
+            height: 280px; /* Scaled from 190px */
             position: relative;
             border-radius: 50%;
             overflow: visible;
@@ -127,8 +127,8 @@
         }
 
         #radial-slider-wrapper .center-dot {
-            width: 9px;
-            height: 9px;
+            width: 11px; /* Scaled from 9px */
+            height: 11px; /* Scaled from 9px */
             background-color: #000000;
             border-radius: 50%;
             position: absolute;
@@ -143,7 +143,7 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 190px;
+            width: 280px; /* Scaled from 190px */
             height: 1px;
             background-color: #e2e2e2;
             transform-origin: 0% 50%;
@@ -182,11 +182,11 @@
                 left: 30px;
             }
             #radial-slider-wrapper .circle-frame {
-                width: 160px;
-                height: 160px;
+                width: 180px;
+                height: 180px;
             }
             #radial-slider-wrapper .radial-line {
-                width: 160px;
+                width: 180px;
             }
         }
     `;
@@ -224,6 +224,7 @@
             this.initLayout();
             this.initDOMRefs();
             this.initListeners();
+            this.triggerEntryWipe();
         }
 
         initLayout() {
@@ -260,12 +261,54 @@
             this.imgNext = document.getElementById('rs-img-next');
             this.coordinatesText = document.getElementById('rs-coordinates-text');
 
-            // Set initial state
-            this.imgCurrent.style.backgroundImage = `url(${this.slides[this.currentIndex].image})`;
-            this.imgNext.style.opacity = '0';
-            this.coordinatesText.textContent = this.slides[this.currentIndex].coordinate;
-
+            // Render selectors
             this.renderIndicators();
+        }
+
+        triggerEntryWipe() {
+            // Configure starting states for page-load entry animation
+            this.imgCurrent.style.backgroundImage = 'none';
+            this.imgCurrent.style.backgroundColor = '#ffffff';
+            this.imgNext.style.backgroundImage = `url(${this.slides[0].image})`;
+            
+            const initMask = `conic-gradient(from 205deg, #000000 0deg, transparent 0deg)`;
+            this.imgNext.style.webkitMaskImage = initMask;
+            this.imgNext.style.maskImage = initMask;
+            this.imgNext.style.opacity = '1';
+            
+            this.coordinatesText.textContent = "00°00'00\"";
+            this.isTransitioning = true; // Lock scrolls during entry wipe
+
+            const self = this;
+            setTimeout(() => {
+                self.animateCoordinates("00°00'00\"", self.slides[0].coordinate, 1200);
+
+                const startTime = performance.now();
+                const duration = 1200;
+
+                function entryWipe(now) {
+                    const elapsed = now - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    
+                    const ease = 1 - Math.pow(1 - progress, 3);
+                    const angle = ease * 360;
+
+                    const maskStr = `conic-gradient(from 205deg, #000000 ${angle}deg, transparent ${angle}deg)`;
+                    self.imgNext.style.webkitMaskImage = maskStr;
+                    self.imgNext.style.maskImage = maskStr;
+
+                    if (progress < 1) {
+                        requestAnimationFrame(entryWipe);
+                    } else {
+                        self.imgCurrent.style.backgroundImage = `url(${self.slides[0].image})`;
+                        self.imgNext.style.opacity = '0';
+                        self.imgNext.style.webkitMaskImage = '';
+                        self.imgNext.style.maskImage = '';
+                        self.isTransitioning = false; // Enable scrolling
+                    }
+                }
+                requestAnimationFrame(entryWipe);
+            }, 300);
         }
 
         parseDMS(dmsStr) {
@@ -415,7 +458,6 @@
         initListeners() {
             // 1. Mouse wheel scroll direction listener
             window.addEventListener('wheel', (e) => {
-                // Check if scroll event happens over our slider or general body
                 if (this.isTransitioning) return;
                 if (Math.abs(e.deltaY) < 15) return;
 
