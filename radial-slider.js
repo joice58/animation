@@ -459,7 +459,7 @@
             // 1. Mouse wheel scroll direction listener
             window.addEventListener('wheel', (e) => {
                 if (this.isTransitioning) return;
-                if (Math.abs(e.deltaY) < 15) return;
+                if (Math.abs(e.deltaY) === 0) return;
 
                 if (e.deltaY > 0) {
                     // Scroll down -> Forward. Stop at boundary slides.

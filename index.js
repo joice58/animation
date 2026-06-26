@@ -201,7 +201,7 @@ function initScrollListeners() {
     // 1. Wheel Listener
     window.addEventListener('wheel', (e) => {
         if (isTransitioning) return;
-        if (Math.abs(e.deltaY) < 15) return;
+        if (Math.abs(e.deltaY) === 0) return;
         
         if (e.deltaY > 0) {
             // Scroll down -> Next slide. Stop at boundary slides.
